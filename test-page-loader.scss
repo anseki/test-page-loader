@@ -1,0 +1,24 @@
+
+$frame-color: #c0c0c0;
+
+.test-page-loader-hide {
+  position: absolute;
+  left: -600px;
+  width: 500px;
+}
+
+.test-page-loader-static {
+  margin: 0 0 10px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 0;
+  border: 2px solid $frame-color;
+  transition: height 200ms ease 0s;
+}
+
+.test-page-loader-head {
+  margin: 0;
+  padding: 3px 5px;
+  background-color: $frame-color;
+  cursor: pointer;
+}

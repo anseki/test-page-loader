@@ -1,0 +1,21 @@
+{
+  "name": "test-page-loader",
+  "version": "0.0.1",
+  "description": "Helper for JavaScript Testing Frameworks (e.g. Jasmine, QUnit, etc.), to load HTML pages as fixtures.",
+  "keywords": [
+    "fixture",
+    "html",
+    "loader",
+    "jasmine",
+    "qunit",
+    "test",
+    "load",
+    "page",
+    "iframe",
+    "window"
+  ],
+  "license": "MIT",
+  "authors": [
+    "anseki <AnSeki.aff@gmail.com>"
+  ]
+}
