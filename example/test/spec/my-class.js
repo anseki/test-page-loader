@@ -28,6 +28,28 @@ describe('MyClass', function() {
     });
   });
 
+  // Same test with different pattern
+  describe('standOut() method 2', function() {
+    it('should set apposite class to the element', function(done) {
+
+      loadPage('spec/my-class/standOut.html', function(window, document, body, done) {
+        var myClass = new window.MyClass(document.getElementById('target-standOut'));
+        body.setAttribute('class', 'dark');
+        myClass.standOut();
+        expect(myClass.element.getAttribute('class')).toBe('light');
+        done(); // `done` of `loadPage()`
+      }, '`<body>` has `dark` class');
+
+      loadPage('spec/my-class/standOut.html', function(window, document, body) {
+        var myClass = new window.MyClass(document.getElementById('target-standOut'));
+        body.setAttribute('class', 'light');
+        myClass.standOut();
+        expect(myClass.element.getAttribute('class')).toBe('dark');
+        done(); // `done` of `it()`
+      }, '`<body>` has `light` class');
+    });
+  });
+
   describe('goLeftTop() method', function() {
     var LEN = {
       'document-margin': 4,
@@ -63,13 +85,13 @@ describe('MyClass', function() {
         file: 'goLeftTop-6.html',
         props: []
       }
-    ].forEach(function(spec) {
-      var title = 'enabled properties: ' + spec.props.join(', ');
+    ].forEach(function(condition) {
+      var title = 'enabled properties: ' + condition.props.join(', ');
       it(title, function(done) {
 
-        loadPage('spec/my-class/' + spec.file, function(window, document) {
+        loadPage('spec/my-class/' + condition.file, function(window, document) {
           var myClass = new window.MyClass(document.getElementById('target-goLeftTop')),
-            len = spec.props.reduce(function(sum, prop) { return (sum += LEN[prop]); }, 0),
+            len = condition.props.reduce(function(sum, prop) { return (sum += LEN[prop]); }, 0),
             styles = myClass.element.style;
 
           myClass.goLeftTop();
@@ -81,6 +103,5 @@ describe('MyClass', function() {
 
       });
     });
-
   });
 });
