@@ -14,6 +14,16 @@
     "iframe",
     "window"
   ],
+  "homepage": "https://github.com/anseki/test-page-loader",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/anseki/test-page-loader.git"
+  },
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "*.css"
+  ],
   "license": "MIT",
   "authors": [
     "anseki <AnSeki.aff@gmail.com>"

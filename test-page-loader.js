@@ -14,12 +14,11 @@ var loadPage = (function() {
   var
     STAT_STOP = 1, STAT_LOADING = 2, STAT_RUNNING = 3,
     DEFAULT_ERROR_MSG = 'Couldn\'t load the page: ',
-    BODY = document.body,
     CSS_TEXT = '.test-page-loader-hide{position:absolute;left:-600px;width:500px}.test-page-loader-static{margin:0 0 10px;box-sizing:border-box;width:100%;height:0;border:2px solid silver;transition:height 200ms ease 0s}.test-page-loader-head{margin:0;padding:3px 5px;background-color:silver;cursor:pointer}',
 
     stat = STAT_STOP,
     queue = [],
-    addedStyle, startTimer, frameH, head1, frames = [], elmA;
+    body, lastElement, styleHasAdded, startTimer, frameH, head1, frames = [], elmA;
 
   function resolveURL(url) {
     var objUrl;
@@ -51,11 +50,10 @@ var loadPage = (function() {
       iframe.addEventListener('abort', listener, false);
     })(function() { throw new Error(DEFAULT_ERROR_MSG + url); });
 
-    BODY.appendChild(iframe);
+    body.insertBefore(iframe, lastElement && lastElement.nextSibling || body.firstChild);
+    lastElement = iframe;
     stat = STAT_LOADING;
     iframe.src = url;
-
-    return iframe;
   }
 
   function setHeight(height, iframe, styles, withAnim) {
@@ -64,7 +62,7 @@ var loadPage = (function() {
     styles.height = height + 'px';
   }
 
-  function resetH() {
+  function resetFrameH() {
     var rect;
     if (head1) {
       rect = head1.getBoundingClientRect();
@@ -88,10 +86,10 @@ var loadPage = (function() {
 
     setHeight(0, iframe, styles);
     iframe.setAttribute('class', 'test-page-loader-static');
-    BODY.insertBefore(head, iframe);
+    body.insertBefore(head, iframe);
 
     head1 = head1 || head;
-    resetH();
+    resetFrameH();
     frames.push(iframe);
   }
 
@@ -106,29 +104,32 @@ var loadPage = (function() {
       var frameDocument = iframe.contentDocument,
         frameBody = frameDocument.body;
 
-      function finish() {
+      function done() {
         stat = STAT_STOP;
         if (page.title != null) { // eslint-disable-line eqeqeq
           setStatic(iframe, page.title);
         } else {
-          BODY.removeChild(iframe);
+          body.removeChild(iframe);
         }
         startTimer = setTimeout(nextPage, 0);
       }
 
+      if (!frameDocument.title) { frameDocument.title = page.title; }
+
       stat = STAT_RUNNING;
-      if (page.cb.length >= 4) { // Wait for `done` is called.
-        page.cb(frameWindow, frameDocument, frameBody, finish);
+      if (page.ready.length >= 4) { // Wait for `done` is called.
+        page.ready(frameWindow, frameDocument, frameBody, done);
       } else {
-        page.cb(frameWindow, frameDocument, frameBody);
-        finish();
+        page.ready(frameWindow, frameDocument, frameBody);
+        done();
       }
     });
   }
 
-  function addStyle() { // Add style rules
+  function init() {
     var sheet;
-    if (!addedStyle) {
+    if (!styleHasAdded) { // Add style rules
+      body = document.body;
       if (document.createStyleSheet) { // IE
         sheet = document.createStyleSheet();
         sheet.cssText = CSS_TEXT;
@@ -138,30 +139,38 @@ var loadPage = (function() {
         sheet.type = 'text/css';
         sheet.textContent = CSS_TEXT;
       }
-      addedStyle = true;
+      styleHasAdded = true;
     }
   }
 
   /**
+   * @callback readyCallback
+   * @param {Window} window
+   * @param {HTMLDocument} document
+   * @param {HTMLBodyElement} body
+   * @param {Function} [done]
+   */
+
+  /**
    * @param {string} url - The URL to load.
-   * @param {Function} cb - Callback function that is called when the page was loaded.
+   * @param {readyCallback} ready - Callback function that is called when the page was loaded.
    * @param {string} [title] - A string that is shown as each header.
    * @returns {void}
    */
-  function loadPage(url, cb, title) {
-    queue.push({url: url, cb: cb, title: title});
+  function loadPage(url, ready, title) {
+    queue.push({url: url, ready: ready, title: title});
     if (document.readyState === 'complete') {
-      addStyle();
+      init();
       startTimer = setTimeout(nextPage, 0);
     } else {
       document.addEventListener('DOMContentLoaded', function() {
-        addStyle();
+        init();
         startTimer = setTimeout(nextPage, 0);
       }, false);
     }
   }
 
-  window.addEventListener('resize', resetH);
+  window.addEventListener('resize', resetFrameH);
 
   return loadPage;
 })();

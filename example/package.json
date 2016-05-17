@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "node-static-alias": "^0.1.3",
+    "log4js": "^0.6.35"
+  }
+}
