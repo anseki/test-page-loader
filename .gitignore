@@ -1,4 +1,4 @@
 .sass-cache
 .vscode
 node_modules
-*.css
+test-page-loader.css

@@ -14,7 +14,7 @@ var loadPage = (function() {
   var
     STAT_STOP = 1, STAT_LOADING = 2, STAT_RUNNING = 3,
     DEFAULT_ERROR_MSG = 'Couldn\'t load the page: ',
-    CSS_TEXT = '.test-page-loader-hide{position:absolute;left:-600px;width:500px}.test-page-loader-static{margin:0 0 10px;box-sizing:border-box;width:100%;height:0;border:2px solid silver;transition:height 200ms ease 0s}.test-page-loader-head{margin:0;padding:3px 5px;background-color:silver;cursor:pointer}',
+    CSS_TEXT = '.test-page-loader-hide{position:absolute;left:-600px;width:500px}.test-page-loader-static{display:block;margin:0 0 5px;box-sizing:border-box;width:100%;height:0;border:2px solid silver;transition:height 200ms ease 0s}.test-page-loader-static:nth-last-of-type(1){margin-bottom:20px}.test-page-loader-head{margin:0;padding:3px 5px;background-color:silver;cursor:pointer;font-size:1em}',
 
     stat = STAT_STOP,
     queue = [],

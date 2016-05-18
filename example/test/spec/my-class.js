@@ -11,7 +11,7 @@ describe('MyClass', function() {
       loadPage('spec/my-class/standOut.html', function(window, document, body) {
         frameBody = body;
         myClass = new window.MyClass(document.getElementById('target-standOut'));
-        done();
+        done(); // Make `it()` start when the page was loaded.
       }, 'standOut() method');
     });
 
@@ -26,18 +26,18 @@ describe('MyClass', function() {
       myClass.standOut();
       expect(myClass.element.getAttribute('class')).toBe('dark');
     });
+
   });
 
   // Same test with different pattern
   describe('standOut() method 2', function() {
     it('should set apposite class to the element', function(done) {
 
-      loadPage('spec/my-class/standOut.html', function(window, document, body, done) {
+      loadPage('spec/my-class/standOut.html', function(window, document, body) {
         var myClass = new window.MyClass(document.getElementById('target-standOut'));
         body.setAttribute('class', 'dark');
         myClass.standOut();
         expect(myClass.element.getAttribute('class')).toBe('light');
-        done(); // `done` of `loadPage()`
       }, '`<body>` has `dark` class');
 
       loadPage('spec/my-class/standOut.html', function(window, document, body) {
@@ -45,8 +45,9 @@ describe('MyClass', function() {
         body.setAttribute('class', 'light');
         myClass.standOut();
         expect(myClass.element.getAttribute('class')).toBe('dark');
-        done(); // `done` of `it()`
+        done(); // Make `it()` finish.
       }, '`<body>` has `light` class');
+
     });
   });
 
@@ -86,18 +87,16 @@ describe('MyClass', function() {
         props: []
       }
     ].forEach(function(condition) {
-      var title = 'enabled properties: ' + condition.props.join(', ');
+      var title = 'enabled properties: ' + condition.props.join(', '),
+        len = condition.props.reduce(function(sum, prop) { return (sum += LEN[prop]); }, 0);
       it(title, function(done) {
 
         loadPage('spec/my-class/' + condition.file, function(window, document) {
           var myClass = new window.MyClass(document.getElementById('target-goLeftTop')),
-            len = condition.props.reduce(function(sum, prop) { return (sum += LEN[prop]); }, 0),
             styles = myClass.element.style;
-
           myClass.goLeftTop();
           expect({left: parseFloat(styles.left), top: parseFloat(styles.top)})
             .toEqual({left: 0 - len, top: 0 - len}); // To aboid `-0`
-
           done();
         }, title);
 
