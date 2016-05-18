@@ -1,6 +1,6 @@
 {
   "name": "test-page-loader",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "title": "Page Loader for Testing",
   "description": "Helper for JavaScript Testing Frameworks (e.g. Jasmine, QUnit, etc.), to load HTML pages as fixtures.",
   "keywords": [
@@ -15,6 +15,10 @@
     "iframe",
     "window"
   ],
+  "devDependencies": {
+    "node-static-alias": "^0.1.3",
+    "log4js": "^0.6.35"
+  },
   "homepage": "https://github.com/anseki/test-page-loader",
   "repository": {
     "type": "git",
