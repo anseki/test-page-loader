@@ -1,6 +1,6 @@
 # Page Loader for Testing
 
-This is a simple helper that is used for unit testing with JavaScript Testing Frameworks (e.g. [Jasmine](http://jasmine.github.io/), [QUnit](https://qunitjs.com/), etc.), and it loads HTML pages as fixtures.  
+Simple helper for unit testing which handles DOM with JavaScript Testing Frameworks (e.g. [Jasmine](http://jasmine.github.io/), [QUnit](https://qunitjs.com/), etc.), to load HTML pages as fixtures.  
 (If you want more features, other great tools such as [jasmine-jquery](https://github.com/velesin/jasmine-jquery) that has many matchers and jQuery supporting will help you.)
 
 ![ss-01](ss-01.png)
