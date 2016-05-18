@@ -1,6 +1,6 @@
 {
   "name": "test-page-loader",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple helper for unit testing which handles DOM with JavaScript Testing Frameworks (e.g. Jasmine, QUnit, etc.), to load HTML pages as fixtures.",
   "keywords": [
     "fixture",
@@ -14,6 +14,7 @@
     "iframe",
     "window"
   ],
+  "main": "test-page-loader.js",
   "homepage": "https://github.com/anseki/test-page-loader",
   "repository": {
     "type": "git",
