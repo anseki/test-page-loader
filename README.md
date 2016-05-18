@@ -131,5 +131,5 @@ node httpd
 
 And then, access to the following by web browser:
 
-- http://localhost:8080/test/Jasmine.html
-- http://localhost:8080/test/QUnit.html
+- [http://localhost:8080/test/Jasmine.html](http://localhost:8080/test/Jasmine.html)
+- [http://localhost:8080/test/QUnit.html](http://localhost:8080/test/QUnit.html)
