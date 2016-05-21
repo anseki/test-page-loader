@@ -114,7 +114,7 @@ loadPage('page-2.html', function(window, document, body) {
 });
 ```
 
-Note that testing functions of some Testing Framework such as Jasmine work inside of each function scope. Therefore, for example, `it()` function that is called in `ready` callback doesn't work.  
+Note that testing functions of some Testing Framework such as Jasmine work inside of specific scope. Therefore, for example, `it()` function that is called after `describe()` function exited doesn't work.  
 If you want to control the sequence of loading pages and testing those, controlling timing to call `loadPage` by Testing Framework (e.g. `done` of Jasmine or `assert.async()` of QUnit) is better than controlling timing to call testing functions by `done` of `ready` callback. (See [Examples](#examples).)
 
 ## Examples
