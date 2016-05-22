@@ -23,8 +23,9 @@ $frame-color: #c0c0c0;
 
 .test-page-loader-head {
   margin: 0;
-  padding: 3px 5px;
+  padding: 3px 5px 0;
   background-color: $frame-color;
   cursor: pointer;
   font-size: 1em;
+  font-family: Monaco, "Lucida Console", monospace;
 }

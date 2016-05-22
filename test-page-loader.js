@@ -14,7 +14,7 @@ var loadPage = (function() {
   var
     STAT_STOP = 1, STAT_LOADING = 2, STAT_RUNNING = 3,
     DEFAULT_ERROR_MSG = 'Couldn\'t load the page: ',
-    CSS_TEXT = '.test-page-loader-hide{position:absolute;left:-600px;width:500px}.test-page-loader-static{display:block;margin:0 0 5px;box-sizing:border-box;width:100%;height:0;border:2px solid silver;transition:height 200ms ease 0s}.test-page-loader-static:nth-last-of-type(1){margin-bottom:20px}.test-page-loader-head{margin:0;padding:3px 5px;background-color:silver;cursor:pointer;font-size:1em}',
+    CSS_TEXT = '.test-page-loader-hide{position:absolute;left:-600px;width:500px}.test-page-loader-static{display:block;margin:0 0 5px;box-sizing:border-box;width:100%;height:0;border:2px solid silver;transition:height 200ms ease 0s}.test-page-loader-static:nth-last-of-type(1){margin-bottom:20px}.test-page-loader-head{margin:0;padding:3px 5px 0;background-color:silver;cursor:pointer;font-size:1em;font-family:Monaco, "Lucida Console", monospace}',
 
     stat = STAT_STOP,
     queue = [],
@@ -114,7 +114,8 @@ var loadPage = (function() {
         startTimer = setTimeout(nextPage, 0);
       }
 
-      if (!frameDocument.title) { frameDocument.title = page.title; }
+      // eslint-disable-next-line eqeqeq
+      if (page.title != null && !frameDocument.title) { frameDocument.title = page.title; }
 
       stat = STAT_RUNNING;
       if (page.ready.length >= 4) { // Wait for `done` is called.
