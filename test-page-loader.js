@@ -24,12 +24,13 @@ var loadPage = (function() {
     var objUrl;
     try {
       objUrl = new URL(url, location.href);
-      return objUrl.href;
-    } catch (error) {
-      elmA = elmA || document.createElement('a');
-      elmA.href = url;
-      return elmA.href;
-    }
+      if (objUrl.href) { return objUrl.href; }
+    } catch (error) { /* ignore */ }
+    // TRIDENT has no URL, URL in WEBKIT has no href
+    elmA = elmA || document.createElement('a');
+    elmA.href = url;
+    if (!elmA.href) { throw new Error('Can\'t get URL'); }
+    return elmA.href;
   }
 
   function createFrame(url, cb) {
