@@ -17,8 +17,16 @@ var loadPage = (function() {
     CSS_TEXT = '.test-page-loader-hide{position:absolute;left:-600px;width:500px}.test-page-loader-static{display:block;margin:0 0 5px;box-sizing:border-box;width:100%;height:0;border:2px solid silver;transition:height 200ms ease 0s}.test-page-loader-static:nth-last-of-type(1){margin-bottom:20px}.test-page-loader-head{margin:0;padding:3px 5px 0;background-color:silver;cursor:pointer;font-size:1em;font-family:Monaco, "Lucida Console", monospace}',
 
     stat = STAT_STOP,
+
+    /** @typedef {{url, ready, title}} PageConf */
+    /** @type {PageConf[]} */
     queue = [],
-    body, lastElement, styleHasAdded, startTimer, frameH, head1, frames = [], elmA;
+
+    /** @typedef {{frame, head}} FrameView */
+    /** @type {FrameView[]} */
+    frames = [],
+
+    body, styleHasAdded, startTimer, frameH, elmA;
 
   function resolveURL(url) {
     var objUrl;
@@ -34,64 +42,68 @@ var loadPage = (function() {
   }
 
   function createFrame(url, cb) {
-    var iframe;
+    var frame, frameView;
 
     function loaded() {
-      var frameWindow = iframe.contentWindow;
+      var frameWindow = frame.contentWindow;
       if (frameWindow.location.href !== resolveURL(url)) { return; } // for Chrome
-      iframe.removeEventListener('load', loaded, false);
-      cb(iframe, frameWindow);
+      frame.removeEventListener('load', loaded, false);
+      cb(frameView, frameWindow);
     }
 
-    iframe = document.createElement('iframe');
-    iframe.setAttribute('class', 'test-page-loader-hide');
-    iframe.addEventListener('load', loaded, false);
+    frame = document.createElement('iframe');
+    frame.className = 'test-page-loader-hide';
+    frame.addEventListener('load', loaded, false);
     (function(listener) {
-      iframe.addEventListener('error', listener, false);
-      iframe.addEventListener('abort', listener, false);
+      frame.addEventListener('error', listener, false);
+      frame.addEventListener('abort', listener, false);
     })(function() { throw new Error(DEFAULT_ERROR_MSG + url); });
 
-    body.insertBefore(iframe, lastElement && lastElement.nextSibling || body.firstChild);
-    lastElement = iframe;
+    body.insertBefore(frame,
+      frames.length && frames[frames.length - 1].frame.nextSibling || body.firstChild);
+    frames.push((frameView = {frame: frame}));
     stat = STAT_LOADING;
-    iframe.src = url;
+    frame.src = url;
   }
 
-  function setHeight(height, iframe, styles, withAnim) {
+  function setHeight(height, frame, styles, withAnim) {
     styles.transitionProperty = withAnim ? 'height' : 'none';
-    iframe.offsetWidth; /* force reflow */ // eslint-disable-line no-unused-expressions
+    frame.offsetWidth; /* force reflow */ // eslint-disable-line no-unused-expressions
     styles.height = height + 'px';
   }
 
   function resetFrameH() {
-    var rect;
-    if (head1) {
+    var head1, rect;
+    if (frames.some(function(frameView) {
+      head1 = frameView.head;
+      return !!frameView.head;
+    })) {
       rect = head1.getBoundingClientRect();
       frameH = document.documentElement.clientHeight - (rect.bottom + window.pageYOffset);
 
-      frames.forEach(function(iframe) {
-        var styles = iframe.style;
-        if (parseFloat(styles.height) > 1) { setHeight(frameH, iframe, styles); }
+      frames.forEach(function(frameView) {
+        var frame, styles;
+        if (frameView.head && parseFloat((styles = (frame = frameView.frame).style).height) > 1) {
+          setHeight(frameH, frame, styles);
+        }
       });
     }
   }
 
-  function setStatic(iframe, title) {
-    var head = document.createElement('h2'),
-      styles = iframe.style;
-    head.setAttribute('class', 'test-page-loader-head');
+  function setStatic(frameView, title) {
+    var frame = frameView.frame, styles = frame.style, head = document.createElement('h2');
+    head.className = 'test-page-loader-head';
     head.textContent = title;
     head.addEventListener('click', function() {
-      setHeight(parseFloat(styles.height) > 1 ? '0' : frameH, iframe, styles, true);
+      setHeight(parseFloat(styles.height) > 1 ? '0' : frameH, frame, styles, true);
     }, false);
 
-    setHeight(0, iframe, styles);
-    iframe.setAttribute('class', 'test-page-loader-static');
-    body.insertBefore(head, iframe);
-
-    head1 = head1 || head;
+    setHeight(0, frame, styles);
+    frame.className = 'test-page-loader-static';
+    body.insertBefore(head, frame);
     resetFrameH();
-    frames.push(iframe);
+    frameView.head = head;
+    head.scrollIntoView();
   }
 
   function nextPage() {
@@ -101,16 +113,18 @@ var loadPage = (function() {
     if (stat !== STAT_STOP || !queue.length) { return; }
 
     page = queue.shift();
-    createFrame(page.url, function(iframe, frameWindow) {
-      var frameDocument = iframe.contentDocument,
+    createFrame(page.url, function(frameView, frameWindow) {
+      var frameDocument = frameView.frame.contentDocument,
         frameBody = frameDocument.body;
 
       function done() {
+        var i;
         stat = STAT_STOP;
         if (page.title != null) { // eslint-disable-line eqeqeq
-          setStatic(iframe, page.title);
+          setStatic(frameView, page.title);
         } else {
-          body.removeChild(iframe);
+          if ((i = frames.indexOf(frameView)) > -1) { frames.splice(i, 1); }
+          body.removeChild(frameView.frame);
         }
         startTimer = setTimeout(nextPage, 0);
       }
