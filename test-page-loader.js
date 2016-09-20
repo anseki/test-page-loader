@@ -101,8 +101,8 @@ var loadPage = (function() {
     setHeight(0, frame, styles);
     frame.className = 'test-page-loader-static';
     body.insertBefore(head, frame);
-    resetFrameH();
     frameView.head = head;
+    resetFrameH();
     head.scrollIntoView();
   }
 
