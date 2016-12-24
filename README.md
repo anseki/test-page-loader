@@ -73,7 +73,7 @@ loadPage('spec/foo-class/bar-method.html', function(window, document, body) {
 By default, an `<iframe>` element is removed when the testing that used it was finished.  
 If the `title` argument is given, the `<iframe>` is kept and shown in the main page for result that should be checked by looking in addition to the test.  
 You can pass a string as a heading of the `<iframe>`. If you want to pass the same title to methods of Testing Framework, you can get the title that was specified to it by `document.title` (i.e. a title of the document that is loaded into `<iframe>`). Note that a `document.title` is not changed if it is already set.  
-See also: [`window.setTitle`](#window-settitle)
+See also: [`window.setTitle`](#windowsettitle)
 
 For example, Jasmine:
 
