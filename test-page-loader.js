@@ -12,11 +12,11 @@ var loadPage = (function() {
   'use strict';
 
   var
-    STAT_STOP = 1, STAT_LOADING = 2, STAT_RUNNING = 3,
+    STATE_STOP = 1, STATE_LOADING = 2, STATE_RUNNING = 3,
     DEFAULT_ERROR_MSG = 'Couldn\'t load the page: ',
     CSS_TEXT = '.test-page-loader-hide{position:absolute;left:-600px;width:500px}.test-page-loader-static{display:block;margin:0 0 5px;box-sizing:border-box;width:100%;height:0;border:2px solid silver;transition:height 200ms ease 0s}.test-page-loader-static:nth-last-of-type(1){margin-bottom:20px}.test-page-loader-head{margin:0;padding:3px 5px 0;background-color:silver;cursor:pointer;font-size:1em;font-family:Monaco, "Lucida Console", monospace}',
 
-    stat = STAT_STOP,
+    state = STATE_STOP,
 
     /** @typedef {{url, ready, title}} PageConf */
     /** @type {PageConf[]} */
@@ -62,7 +62,7 @@ var loadPage = (function() {
     body.insertBefore(frame,
       frames.length && frames[frames.length - 1].frame.nextSibling || body.firstChild);
     frames.push((frameView = {frame: frame}));
-    stat = STAT_LOADING;
+    state = STATE_LOADING;
     frame.src = url;
   }
 
@@ -110,7 +110,7 @@ var loadPage = (function() {
     var page;
 
     clearTimeout(startTimer);
-    if (stat !== STAT_STOP || !queue.length) { return; }
+    if (state !== STATE_STOP || !queue.length) { return; }
 
     page = queue.shift();
     createFrame(page.url, function(frameView, frameWindow) {
@@ -119,8 +119,8 @@ var loadPage = (function() {
 
       function done() {
         var i;
-        stat = STAT_STOP;
-        if (page.title != null) { // eslint-disable-line eqeqeq
+        state = STATE_STOP;
+        if (page.title != null) {
           setStatic(frameView, page.title);
         } else {
           if ((i = frames.indexOf(frameView)) > -1) { frames.splice(i, 1); }
@@ -129,10 +129,13 @@ var loadPage = (function() {
         startTimer = setTimeout(nextPage, 0);
       }
 
-      // eslint-disable-next-line eqeqeq
       if (page.title != null && !frameDocument.title) { frameDocument.title = page.title; }
+      frameWindow.setTitle = function(title) {
+        page.title = title;
+        if (page.title != null && !frameDocument.title) { frameDocument.title = page.title; }
+      };
 
-      stat = STAT_RUNNING;
+      state = STATE_RUNNING;
       if (page.ready.length >= 4) { // Wait for `done` is called.
         page.ready(frameWindow, frameDocument, frameBody, done);
       } else {

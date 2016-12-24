@@ -1,6 +1,7 @@
 # Page Loader for Testing
 
 Simple helper for unit testing which handles DOM with JavaScript Testing Frameworks (e.g. [Jasmine](http://jasmine.github.io/), [QUnit](https://qunitjs.com/), etc.), to load HTML pages as fixtures.  
+This provides a new window (`<iframe>`) for your code which handles DOM.  
 (If you want more features, other great tools such as [jasmine-jquery](https://github.com/velesin/jasmine-jquery) that has many matchers and jQuery supporting will help you.)
 
 ![ss-01](ss-01.png)
@@ -71,7 +72,8 @@ loadPage('spec/foo-class/bar-method.html', function(window, document, body) {
 
 By default, an `<iframe>` element is removed when the testing that used it was finished.  
 If the `title` argument is given, the `<iframe>` is kept and shown in the main page for result that should be checked by looking in addition to the test.  
-You can pass a string as a heading of the `<iframe>`. If you want to pass the same title to methods of Testing Framework, you can get the title that was specified to it by `document.title` (i.e. a title of the document that is loaded into `<iframe>`). Note that a `document.title` is not changed if it is already set.
+You can pass a string as a heading of the `<iframe>`. If you want to pass the same title to methods of Testing Framework, you can get the title that was specified to it by `document.title` (i.e. a title of the document that is loaded into `<iframe>`). Note that a `document.title` is not changed if it is already set.  
+See also: [`window.setTitle`](#window-settitle)
 
 For example, Jasmine:
 
@@ -97,7 +99,7 @@ loadPage('fixture.html', function(window, document, body) {
 ## Asynchronous Support
 
 If `loadPage` is called multiple times, each requested page is loaded in turn.  
-By default, loading next page starts when current `ready` callback was exited. You can make the next loading wait by making the `ready` callback take `done` argument. `done` is callback function, and loading next page waits until `done` callback is called.
+By default, loading next page starts when current [`ready`](#ready) callback was exited. You can make the next loading wait by making the `ready` callback take `done` argument. `done` is callback function, and loading next page waits until `done` callback is called.
 
 For example:
 
@@ -116,6 +118,52 @@ loadPage('page-2.html', function(window, document, body) {
 
 Note that testing functions of some Testing Frameworks such as Jasmine work inside of specific scope. Therefore, for example, `it()` function that is called after `describe()` function exited doesn't work.  
 If you want to control the sequence of loading pages and testing those, controlling timing to call `loadPage` by Testing Framework (e.g. `done` of Jasmine or `assert.async()` of QUnit) is better than controlling timing to call testing functions by `done` of `ready` callback. (See [Examples](#examples).)
+
+## `window.setTitle`
+
+A window of `<iframe>` that is passed to the [`ready`](#ready) callback has `setTitle` method.  
+You can change the [`title`](#title) (heading of the `<iframe>`) that was specified (or not specified) in [`loadPage`](#loadpage).  
+For example, load multiple pages, and set the proper title for the each test. Or, set `null` to remove the `<iframe>`, when the test was passed.
+
+For example, Jasmine:
+
+```js
+var frameWindow, frameDone, currentSpec;
+
+beforeEach(function(beforeDone) {
+  loadPage('page.html', function(window, document, body, done) {
+    frameWindow = window;
+    frameDone = done;
+    beforeDone(); // Make `it()` start when the page was loaded.
+  }); // `title` is not yet specified.
+});
+
+afterEach(function(done) {
+  frameWindow.setTitle(
+    currentSpec.result.failedExpectations.length ?
+      currentSpec.getFullName() : // 'test-1' and 'test-2' that are specified for `it` method.
+      null // Drop this `<iframe>` when all tests are passed.
+  );
+  frameDone();
+  done();
+});
+
+var test1 = it('test-1', function(done) {
+  currentSpec = test1;
+  // Do something ...
+  expect(1).toBe(0);
+  done();
+});
+
+var test2 = it('test-2', function(done) {
+  currentSpec = test2;
+  // Do something ...
+  expect(1).toBe(1);
+  done();
+});
+```
+
+Note that the `setTitle` method works only before `ready` callback is exited or `done` callback is called in [asynchronous mode](#asynchronous-support).
 
 ## Examples
 
