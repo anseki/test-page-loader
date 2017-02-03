@@ -2,7 +2,7 @@
  * Page Loader for Testing
  * https://github.com/anseki/test-page-loader
  *
- * Copyright (c) 2016 anseki
+ * Copyright (c) 2017 anseki
  * Licensed under the MIT license.
  */
 
