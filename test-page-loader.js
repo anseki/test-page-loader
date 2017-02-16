@@ -1,5 +1,5 @@
 /*
- * Page Loader for Testing
+ * test-page-loader
  * https://github.com/anseki/test-page-loader
  *
  * Copyright (c) 2017 anseki

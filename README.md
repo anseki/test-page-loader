@@ -2,15 +2,15 @@
 
 [![npm](https://img.shields.io/npm/v/test-page-loader.svg)](https://www.npmjs.com/package/test-page-loader) [![GitHub issues](https://img.shields.io/github/issues/anseki/test-page-loader.svg)](https://github.com/anseki/test-page-loader/issues) [![dependencies](https://img.shields.io/badge/dependencies-No%20dependency-brightgreen.svg)](package.json) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE-MIT)
 
-Simple helper for unit testing which handles DOM with JavaScript Testing Frameworks (e.g. [Jasmine](http://jasmine.github.io/), [QUnit](https://qunitjs.com/), etc.), to load HTML pages as fixtures.  
-This provides a new window (`<iframe>`) for your code which handles DOM.  
+Simple helper for unit testing with JavaScript Testing Frameworks (e.g. [Jasmine](http://jasmine.github.io/), [QUnit](https://qunitjs.com/), etc.), to load HTML pages as fixtures.  
+This provides a new window (`<iframe>`) for your code which handles DOM, or that which requires independent name spaces (`global`), etc.  
 (If you want more features, other great tools such as [jasmine-jquery](https://github.com/velesin/jasmine-jquery) that has many matchers and jQuery supporting will help you.)
 
 ![ss-01](ss-01.png)
 
 Features:
 
-- Load HTML pages into `<iframe>` instead of an element like `div#qunit-fixture`. This is useful for tests that need running based on document (i.e. window, `<body>`, etc.). For example, various document situations are needed for testing a function that finds something in all of the document or a function does something according to current style of `<body>`. Or the testing for something that affects the document.
+- Load HTML pages into `<iframe>` instead of an element like `div#qunit-fixture`. This is useful for tests that need running based on document (i.e. window, `<body>`, etc.), or tests that need independent name spaces (`global`). For example, testing a function that does something according to various document situations, or testing a library that has cache data (i.e. each test code requires initial condition).
 - Don't remove the `<iframe>`s that were used for each test and show those on main page, if you want. This is useful for tests that should be checked by looking in addition to the test.
 - No dependency library. You need to add just only one file, and this works without depending on anything (even Testing Framework).
 
