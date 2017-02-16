@@ -6,7 +6,10 @@ Simple helper for unit testing with JavaScript Testing Frameworks (e.g. [Jasmine
 This provides a new window (`<iframe>`) for your code which handles DOM, or that which requires independent name spaces (`global`), etc.  
 (If you want more features, other great tools such as [jasmine-jquery](https://github.com/velesin/jasmine-jquery) that has many matchers and jQuery supporting will help you.)
 
-![ss-01](ss-01.png)
+**Example (Jasmine): <a href="https://anseki.github.io/test-page-loader/">https://anseki.github.io/test-page-loader/</a>**  
+(Each frame is opened by clicking a gray bar.)
+
+[![ss-01](ss-01.png)](https://anseki.github.io/test-page-loader/)
 
 Features:
 
