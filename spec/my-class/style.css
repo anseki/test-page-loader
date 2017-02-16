@@ -1,0 +1,59 @@
+
+/* ================================ for `standOut` */
+
+#target-standOut {
+  margin: 30px;
+  display: inline-block;
+  padding: 15px 5px;
+  background-color: blue;
+  color: yellow;
+  font-size: 2.5em;
+}
+
+body.dark {
+  background-color: gray;
+}
+
+body.light {
+  background-color: lightcyan;
+}
+
+#target-standOut.dark {
+  background-color: darkgreen;
+  color: lightgreen;
+}
+
+#target-standOut.light {
+  background-color: lightgreen;
+  color: darkgreen;
+}
+
+/* ================================ for `goLeftTop` */
+
+html.goLeftTop,
+body.goLeftTop { border: solid maroon; }
+html.goLeftTop { background-color: burlywood; }
+body.goLeftTop { background-color: darkorange; }
+
+html.goLeftTop,
+body.goLeftTop { /* All zero clear */
+  margin: 0;
+  border-width: 0;
+  padding: 0;
+}
+
+body.goLeftTop {
+  position: relative;
+  color: white;
+  text-align: center;
+  font-size: 2.5em;
+}
+
+#target-goLeftTop {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+  color: yellow;
+  font-size: 22px;
+}
