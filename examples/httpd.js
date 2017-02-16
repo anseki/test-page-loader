@@ -3,14 +3,12 @@
 'use strict';
 
 const
-  DOC_ROOT = './',
+  DOC_ROOT = __dirname,
   PORT = 8080,
 
   http = require('http'),
   staticAlias = require('node-static-alias'),
   log4js = require('log4js');
-
-var logger;
 
 log4js.configure({
   appenders: [
@@ -23,7 +21,7 @@ log4js.configure({
     }
   ]
 });
-logger = log4js.getLogger('node-static-alias');
+let logger = log4js.getLogger('node-static-alias');
 logger.setLevel(log4js.levels.INFO);
 
 http.createServer((request, response) => {
