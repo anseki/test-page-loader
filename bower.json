@@ -1,6 +1,6 @@
 {
   "name": "test-page-loader",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple helper for unit testing with JavaScript Testing Frameworks (e.g. Jasmine, QUnit, etc.), to load HTML pages as fixtures.",
   "keywords": [
     "fixture",
