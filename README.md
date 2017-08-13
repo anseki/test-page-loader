@@ -11,7 +11,7 @@ This provides a new window (`<iframe>`) for your code which handles DOM, or that
 
 [![ss-01](ss-01.png)](https://anseki.github.io/test-page-loader/)
 
-Features:
+**Features:**
 
 - Load HTML pages into `<iframe>` instead of an element like `div#qunit-fixture`. This is useful for tests that need running based on document (i.e. window, `<body>`, etc.), or tests that need independent name spaces (`global`). For example, testing a function that does something according to various document situations, or testing a library that has cache data (i.e. each test code requires initial condition).
 - Don't remove the `<iframe>`s that were used for each test and show those on main page, if you want. This is useful for tests that should be checked by looking in addition to the test.
@@ -19,7 +19,7 @@ Features:
 
 ## Usage
 
-Add a file `test-page-loader.js` into your main page that is "test runner".
+Load a `test-page-loader.js` file into your main page that is "test runner".
 
 ```html
 <script src="path/to/test-page-loader.js"></script>

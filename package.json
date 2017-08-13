@@ -18,7 +18,7 @@
   "main": "test-page-loader.js",
   "devDependencies": {
     "node-static-alias": "^1.0.0",
-    "log4js": "^1.1.0"
+    "log4js": "^2.3.3"
   },
   "homepage": "https://github.com/anseki/test-page-loader",
   "repository": {
