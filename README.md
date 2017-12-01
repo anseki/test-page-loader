@@ -172,21 +172,29 @@ Note that the `setTitle` method works only before `ready` callback is exited or 
 
 ## Examples
 
-You need [Node.js](https://nodejs.org/) (and NPM) installed and available in your `$PATH`.
-
-Run the following commands:
+If you have not installed test-page-loader yet, install it first.  
+You need [Node.js](https://nodejs.org/) (and NPM) installed and available in your `$PATH`.  
+Run the following command to install test-page-loader:
 
 ```
-cd examples
+npm install test-page-loader
+```
+
+And, run the following commands for examples:
+
+```
+cd node_modules/test-page-loader
 npm install
-node httpd
+npm run examples
 ```
+
+Note: The above `node_modules` is a path that the library was installed into. You might want to do the first command with `--only=dev` instead of these commands, but that might not work correctly because version of your NPM has a bug.
 
 And then, access to the following by web browser:
 
 - [http://localhost:8080/test/Jasmine.html](http://localhost:8080/test/Jasmine.html)
 - [http://localhost:8080/test/QUnit.html](http://localhost:8080/test/QUnit.html)
 
-`npm install` is required only a first time.
+The `cd ...` and `npm install` commands are required only a first time.
 
 It uses [node-static-alias](https://github.com/anseki/node-static-alias) and [log4js](https://github.com/nomiddlename/log4js-node) for http accessing.
