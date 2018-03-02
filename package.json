@@ -19,8 +19,7 @@
   "files": [
     "test-page-loader.js",
     "examples",
-    "bower.json",
-    "LICENSE-MIT"
+    "bower.json"
   ],
   "devDependencies": {
     "node-static-alias": "^1.0.0",
