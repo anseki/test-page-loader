@@ -8,21 +8,22 @@ const
 
   http = require('http'),
   staticAlias = require('node-static-alias'),
-  log4js = require('log4js');
-
-log4js.configure({
-  appenders: {
-    out: {
-      type: 'console',
-      layout: {
-        type: 'pattern',
-        pattern: '%[[%r]%] %m' // Super simple format
-      }
-    }
-  },
-  categories: {default: {appenders: ['out'], level: 'info'}}
-});
-let logger = log4js.getLogger('node-static-alias');
+  logger = (() => {
+    const log4js = require('log4js');
+    log4js.configure({
+      appenders: {
+        out: {
+          type: 'console',
+          layout: {
+            type: 'pattern',
+            pattern: '%[[%r]%] %m' // Super simple format
+          }
+        }
+      },
+      categories: {default: {appenders: ['out'], level: 'info'}}
+    });
+    return log4js.getLogger('node-static-alias');
+  })();
 
 http.createServer((request, response) => {
   request.addListener('end', () => {
