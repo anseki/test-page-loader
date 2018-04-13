@@ -37,19 +37,19 @@ http.createServer((request, response) => {
           allowOutside: true
         }
       ],
-      logger: logger
+      logger
     }))
-    .serve(request, response, e => {
-      if (e) {
-        response.writeHead(e.status, e.headers);
-        logger.error('(%s) %s', request.url, response.statusCode);
-        if (e.status === 404) {
-          response.end('Not Found');
+      .serve(request, response, e => {
+        if (e) {
+          response.writeHead(e.status, e.headers);
+          logger.error('(%s) %s', request.url, response.statusCode);
+          if (e.status === 404) {
+            response.end('Not Found');
+          }
+        } else {
+          logger.info('(%s) %s', request.url, response.statusCode);
         }
-      } else {
-        logger.info('(%s) %s', request.url, response.statusCode);
-      }
-    });
+      });
   }).resume();
 }).listen(PORT);
 
