@@ -17,16 +17,16 @@ var MyClass = (function() {
       bodyStyles = getComputedStyle(document.body),
       myStyles = this.element.style;
 
-    myStyles.left = -parseFloat(bodyStyles.borderLeftWidth)
-      - parseFloat(bodyStyles.marginLeft)
-      - parseFloat(docStyles.paddingLeft)
-      - parseFloat(docStyles.borderLeftWidth)
-      - parseFloat(docStyles.marginLeft) + 'px';
-    myStyles.top = -parseFloat(bodyStyles.borderTopWidth)
-      - parseFloat(bodyStyles.marginTop)
-      - parseFloat(docStyles.paddingTop)
-      - parseFloat(docStyles.borderTopWidth)
-      - parseFloat(docStyles.marginTop) + 'px';
+    myStyles.left = -parseFloat(bodyStyles.borderLeftWidth) -
+      parseFloat(bodyStyles.marginLeft) -
+      parseFloat(docStyles.paddingLeft) -
+      parseFloat(docStyles.borderLeftWidth) -
+      parseFloat(docStyles.marginLeft) + 'px';
+    myStyles.top = -parseFloat(bodyStyles.borderTopWidth) -
+      parseFloat(bodyStyles.marginTop) -
+      parseFloat(docStyles.paddingTop) -
+      parseFloat(docStyles.borderTopWidth) -
+      parseFloat(docStyles.marginTop) + 'px';
     // In actuality, `getBoundingClientRect` should be used.
   };
 
