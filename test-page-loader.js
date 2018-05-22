@@ -176,7 +176,8 @@ var loadPage = (function() {
 
   /**
    * @param {string} url - The URL to load.
-   * @param {readyCallback} ready - Callback function that is called when the page was loaded.
+   * @param {readyCallback} ready - Callback function that is called when the
+   *    page was loaded.
    * @param {string} [title] - A string that is shown as each header.
    * @returns {void}
    */
