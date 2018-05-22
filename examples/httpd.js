@@ -6,8 +6,6 @@ const
   DOC_ROOT = __dirname,
   PORT = 8080,
 
-  http = require('http'),
-  staticAlias = require('node-static-alias'),
   logger = (() => {
     const log4js = require('log4js');
     log4js.configure({
@@ -23,33 +21,34 @@ const
       categories: {default: {appenders: ['out'], level: 'info'}}
     });
     return log4js.getLogger('node-static-alias');
-  })();
+  })(),
 
-http.createServer((request, response) => {
+  staticAlias = new (require('node-static-alias')).Server(DOC_ROOT, {
+    cache: false,
+    headers: {'Cache-Control': 'no-cache, must-revalidate'},
+    alias: [
+      {
+        match: '/test-page-loader.js',
+        serve: '../test-page-loader.js',
+        allowOutside: true
+      }
+    ],
+    logger
+  });
+
+require('http').createServer((request, response) => {
   request.addListener('end', () => {
-    (new staticAlias.Server(DOC_ROOT, {
-      cache: false,
-      headers: {'Cache-Control': 'no-cache, must-revalidate'},
-      alias: [
-        {
-          match: '/test-page-loader.js',
-          serve: '../test-page-loader.js',
-          allowOutside: true
+    staticAlias.serve(request, response, error => {
+      if (error) {
+        response.writeHead(error.status, error.headers);
+        logger.error('(%s) %s', request.url, response.statusCode);
+        if (error.status === 404) {
+          response.end('Not Found');
         }
-      ],
-      logger
-    }))
-      .serve(request, response, e => {
-        if (e) {
-          response.writeHead(e.status, e.headers);
-          logger.error('(%s) %s', request.url, response.statusCode);
-          if (e.status === 404) {
-            response.end('Not Found');
-          }
-        } else {
-          logger.info('(%s) %s', request.url, response.statusCode);
-        }
-      });
+      } else {
+        logger.info('(%s) %s', request.url, response.statusCode);
+      }
+    });
   }).resume();
 }).listen(PORT);
 
