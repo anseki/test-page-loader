@@ -3,11 +3,14 @@
 'use strict';
 
 const
+  nodeStaticAlias = require('node-static-alias'),
+  log4js = require('log4js'),
+  http = require('http'),
+
   DOC_ROOT = __dirname,
   PORT = 8080,
 
   logger = (() => {
-    const log4js = require('log4js');
     log4js.configure({
       appenders: {
         out: {
@@ -23,7 +26,7 @@ const
     return log4js.getLogger('node-static-alias');
   })(),
 
-  staticAlias = new (require('node-static-alias')).Server(DOC_ROOT, {
+  staticAlias = new nodeStaticAlias.Server(DOC_ROOT, {
     cache: false,
     headers: {'Cache-Control': 'no-cache, must-revalidate'},
     alias: [
@@ -36,7 +39,7 @@ const
     logger
   });
 
-require('http').createServer((request, response) => {
+http.createServer((request, response) => {
   request.addListener('end', () => {
     staticAlias.serve(request, response, error => {
       if (error) {
