@@ -1,4 +1,3 @@
-node_modules
 .vscode
-.sass-cache
+node_modules
 test-page-loader.css
