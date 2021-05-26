@@ -22,8 +22,8 @@
     "bower.json"
   ],
   "devDependencies": {
-    "node-static-alias": "^1.1.2",
-    "log4js": "^2.8.0"
+    "log4js": "^6.3.0",
+    "node-static-alias": "^1.1.2"
   },
   "scripts": {
     "examples": "node ./examples/httpd"
