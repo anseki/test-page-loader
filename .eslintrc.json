@@ -1,6 +1,6 @@
 {
   "root": true,
-  "extends": "../../_common/eslintrc.json",
+  "extends": "../../_common/files/eslintrc.json",
   "env": {"browser": true},
   "rules": {
     "no-var": "off",
