@@ -22,7 +22,7 @@
     "bower.json"
   ],
   "devDependencies": {
-    "log4js": "^6.3.0",
+    "log4js": "^6.4.0",
     "node-static-alias": "^1.1.2"
   },
   "scripts": {
