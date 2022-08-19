@@ -1,6 +1,6 @@
 # test-page-loader
 
-[![npm](https://img.shields.io/npm/v/test-page-loader.svg)](https://www.npmjs.com/package/test-page-loader) [![GitHub issues](https://img.shields.io/github/issues/anseki/test-page-loader.svg)](https://github.com/anseki/test-page-loader/issues) [![dependencies](https://img.shields.io/badge/dependencies-No%20dependency-brightgreen.svg)](package.json) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE-MIT)
+[![npm](https://img.shields.io/npm/v/test-page-loader.svg)](https://www.npmjs.com/package/test-page-loader) [![GitHub issues](https://img.shields.io/github/issues/anseki/test-page-loader.svg)](https://github.com/anseki/test-page-loader/issues) [![dependencies](https://img.shields.io/badge/dependencies-No%20dependency-brightgreen.svg)](package.json) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Simple helper for unit testing with JavaScript Testing Frameworks (e.g. [Jasmine](http://jasmine.github.io/), [QUnit](https://qunitjs.com/), etc.), to load HTML pages as fixtures.  
 This provides a new window (`<iframe>`) for your code which handles DOM, or that which requires independent name spaces (`global`), etc.  
